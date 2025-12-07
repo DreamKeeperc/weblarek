@@ -1,20 +1,16 @@
 export type ApiPostMethods = 'POST' | 'PUT' | 'DELETE';
 export type TPayment = 'cash' | 'card' | '';
+
 export type ObjectApi = {
     total: number,
     items: IProduct[]
 }
-export type validationErrors = {
-    email?: string;
-    phone?: string;
-    address?: string;
-    payment?: string;
-}
 
-export type validationResult = {
-    isValid: boolean;
-    data?: IBuyer;
-    errors?: validationErrors;
+export type Errors = {
+    payment?: 'Не выбран вид оплаты';
+    email?: 'Укажите емэйл';
+    phone?: 'Укажите номер';
+    address?: 'Укажите адрес'
 }
 
 export interface IApi {
@@ -32,8 +28,8 @@ export interface IProduct {
 }
 
 export interface IBuyer {
-    payment: TPayment;
-    email: string;
-    phone: string;
-    address: string;
+    payment: TPayment | null;
+    email: string | null;
+    phone: string | null;
+    address: string | null;
 }

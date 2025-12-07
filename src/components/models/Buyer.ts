@@ -1,79 +1,68 @@
-import { IBuyer, TPayment, validationErrors, validationResult } from "../../types"
+import { Errors, IBuyer, TPayment } from "../../types"
 
 export class Buyer {
-  protected _payment: TPayment;
-  protected _address: string;
-  protected _phone: string;
-  protected _email: string;
+  protected payment: TPayment | null = null;
+  protected address: string | null = null;
+  protected phone: string | null = null;
+  protected email: string | null = null;
 
-  constructor (payment: TPayment, address: string, phone: string, email: string) {
-    this._payment = payment,
-    this._address = address,
-    this._phone = phone,
-    this._email = email
+  constructor () {
   }
 
-  set payment(payment: TPayment) {
-    this._payment = payment;
+  setPayment(payment: TPayment): void {
+    this.payment = payment;
   }
 
-  set address(address: string) {
-    this._address = address;
+  setAddress(address: string): void {
+    this.address = address;
   }
 
-  set phone(phone: string) {
-    this._phone = phone;
+  setPhone(phone: string): void {
+    this.phone = phone;
   }
 
-  set email(email: string) {
-    this._email = email
+  setEmail(email: string):void {
+    this.email = email
   }
 
   getData(): IBuyer {
     return {
-      payment: this._payment,
-      address: this._address,
-      phone: this._phone, 
-      email: this._email
+      payment: this.payment,
+      address: this.address,
+      phone: this.phone,
+      email: this.email
     }
   }
 
   clearData(): void {
-    this._payment = '' as TPayment;
-    this._address = '';
-    this._phone =  ''; 
-    this._email = '';  // - очистка данных покупателя;
+    this.payment = '' as TPayment;
+    this.address = '';
+    this.phone =  ''; 
+    this.email = '';  // - очистка данных покупателя;
   }
 
-  isValid(email: string, phone: string, address: string, payment: TPayment): validationResult {
-    const errors: validationErrors = {};
+  isValid():Errors {
 
-    if(!email || email.trim().length <= 0) {
-      errors.email = 'Укажите почту'
+    const errors: Errors = {};
+
+    if(!this.payment?.trim()){
+      errors.payment = 'Не выбран вид оплаты'
     } 
 
-    if(!phone || phone.trim().length <= 0) {
-      errors.phone = 'Укажите номер телефона'
-    }
-    
-    if(!address || address.trim().length <= 0) {
-      errors.address = 'Укажите адрес доставки'
+    if(!this.address?.trim()){
+      errors.address = 'Укажите адрес'
     }
 
-    if(!payment) {
-      errors.payment = 'Выберите способ оплаты';
+    if(!this.phone?.trim()){
+      errors.phone = 'Укажите номер'
     }
-   
-    if (Object.keys(errors).length === 0) {
-      return {
-        isValid: true,
-        data: this.getData()
-      }
-    } else {
-      return {
-        isValid: false,
-        errors: errors
-      };
+
+    if(!this.email?.trim()){
+      errors.email = 'Укажите емэйл'
     }
+
+    return errors
+
   }
+
 }

@@ -1,21 +1,14 @@
-import { Api } from '../base/Api';
-import { ApiPostMethods, IApi, ObjectApi } from '../../types/index';
+import { IApi, ObjectApi } from "../../types";
 
-export class WebLarekApi implements IApi {
-  private _api: Api
-  protected data: ObjectApi
-
-  constructor(objectApi: ObjectApi, baseUrl: string, options: RequestInit = {}) {
-    this.data = objectApi
-    this._api = new Api(baseUrl, options)
+export class WebLarekApi {
+  constructor(private api: IApi) {
   }
 
-  get<T extends object>(uri: string = '/product/') {
-    return this._api.get<T>(uri);
-  }
-  
-  post<T extends object>(uri: string = '/order/', data: object, method: ApiPostMethods = 'POST') {
-    return this._api.post<T>(uri, data, method)
+  getProducts(): Promise<ObjectApi> {
+    return this.api.get<ObjectApi>('/product');
   }
 
+  postProducts(data: ObjectApi): Promise<ObjectApi> {
+    return this.api.post<ObjectApi>('/order', data);
+  }
 }

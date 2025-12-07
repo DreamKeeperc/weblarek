@@ -133,11 +133,11 @@ type TPayment - это псевдоним типа, который хранит 
 Хранит выбранный продукт для подробного отображения.
 
 Конструктор:  
-`constructor(products: IProduct[], product: IProduct)` - В конструктор передается массив всех продуктов, который мы получаем с сервера, а также храним выбранный продукт.
+`constructor()` - В конструктор передается массив всех продуктов, который мы получаем с сервера, а также храним выбранный продукт.
 
 Поля класса:  
-`protected _products: IProduct[]` - массив продуктов,
-`protected _product: IProduct`
+`protected products: IProduct[]` - массив продуктов,
+`protected selectedProduct: IProduct | null = null`
 
 Методы:  
 `setProducts(products: IProduct[])` - сохранение массива товаров полученного в параметрах метода;
