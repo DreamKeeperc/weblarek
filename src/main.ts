@@ -4,13 +4,20 @@ import { Buyer } from './components/models/Buyer';
 import { Catalog } from './components/models/Catalog';
 import { WebLarekApi } from './components/models/WebLarekApi';
 import './scss/styles.scss';
-import { apiProducts } from './utils/data';
+import { API_URL } from './utils/constants';
+
+const baseApi = new Api(API_URL);
+const api = new WebLarekApi(baseApi);
+const elements = api.getProducts();
+
+const data = await elements;
+console.log('В data будет хранится обьект, полученный с сервера', data)
 
 const productsModels = new Catalog();
-productsModels.setProducts(apiProducts.items);
+productsModels.setProducts(data.items);
 console.log('Массив товаров из каталога:', productsModels.getProducts())
-console.log('Получение одного товара по его id:', productsModels.getProductById(apiProducts.items[2].id));
-productsModels.setProduct(apiProducts.items[0].id) // - Cохранение товара для подробного отображения
+console.log('Получение одного товара по его id:', productsModels.getProductById(data.items[2].id));
+productsModels.setProduct(data.items[0].id) // - Cохранение товара для подробного отображения
 console.log('Получение товара для подробного отображения:', productsModels.getProduct())
 
 const productInBasket = new Basket();
@@ -52,10 +59,5 @@ buyer.setEmail('nyusha@gmail.com');
 const dataBuyer = buyer.getData();
 console.log(dataBuyer)
 
-const baseApi = new Api('https://larek-api.nomoreparties.co/api/weblarek');
-
-const api = new WebLarekApi(baseApi);
-
-console.log(api)
-const show = api.getProducts();
-console.log(show)
+const checkValidation = buyer.isValid();
+console.log(checkValidation)

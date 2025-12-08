@@ -1,10 +1,10 @@
 import { Errors, IBuyer, TPayment } from "../../types"
 
 export class Buyer {
-  protected payment: TPayment | null = null;
-  protected address: string | null = null;
-  protected phone: string | null = null;
-  protected email: string | null = null;
+  protected payment: TPayment = '';
+  protected address: string = '';
+  protected phone: string = '';
+  protected email: string = '';
 
   constructor () {
   }
