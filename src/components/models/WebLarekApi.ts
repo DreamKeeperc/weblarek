@@ -1,4 +1,4 @@
-import { IApi, ObjectApi, PostData } from "../../types";
+import { IApi, ObjectApi, PostData} from "../../types";
 
 export class WebLarekApi {
   constructor(private api: IApi) {

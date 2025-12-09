@@ -1,9 +1,9 @@
 export type ApiPostMethods = 'POST' | 'PUT' | 'DELETE';
 export type TPayment = 'cash' | 'card' | '';
 
-export type PostData = {
-    data: ObjectApi;
-    buyer: IBuyer[];
+export type PostData = IBuyer & {
+    total: number,
+    items: string[]
 }
 
 export type ObjectApi = {
@@ -19,8 +19,8 @@ export type Errors = {
 }
 
 export interface IApi {
-    get<T extends object>(uri: string): Promise<T>;
-    post<T extends object>(uri: string, data: object, method?: ApiPostMethods): Promise<T>;
+    get<T extends object>(url: string): Promise<T>;
+    post<T extends object>(url: string, data: object, method?: ApiPostMethods): Promise<T>;
 }
 
 export interface IProduct {

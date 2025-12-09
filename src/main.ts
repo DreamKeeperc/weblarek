@@ -5,19 +5,14 @@ import { Catalog } from './components/models/Catalog';
 import { WebLarekApi } from './components/models/WebLarekApi';
 import './scss/styles.scss';
 import { API_URL } from './utils/constants';
+import { apiProducts } from './utils/data';
 
-const baseApi = new Api(API_URL);
-const api = new WebLarekApi(baseApi);
-const elements = api.getProducts();
-
-const data = await elements;
-console.log('В data будет хранится обьект, полученный с сервера', data)
 
 const productsModels = new Catalog();
-productsModels.setProducts(data.items);
+productsModels.setProducts(apiProducts.items);
 console.log('Массив товаров из каталога:', productsModels.getProducts())
-console.log('Получение одного товара по его id:', productsModels.getProductById(data.items[2].id));
-productsModels.setProduct(data.items[0].id) // - Cохранение товара для подробного отображения
+console.log('Получение одного товара по его id:', productsModels.getProductById(apiProducts.items[2].id));
+productsModels.setProduct(apiProducts.items[0].id) // - Cохранение товара для подробного отображения
 console.log('Получение товара для подробного отображения:', productsModels.getProduct())
 
 const productInBasket = new Basket();
@@ -60,4 +55,15 @@ const dataBuyer = buyer.getData();
 console.log(dataBuyer)
 
 const checkValidation = buyer.isValid();
-console.log(checkValidation)
+console.log(checkValidation);
+
+const baseApi = new Api(API_URL);
+const api = new WebLarekApi(baseApi);
+
+api.getProducts()
+.then((res)=> {
+  const newData = res.items
+  productsModels.setProducts(newData)
+  console.log(productsModels.getProducts())
+})
+.catch((err)=> {console.log('Ошибка получения данных', err)})
