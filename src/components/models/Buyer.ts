@@ -41,7 +41,7 @@ export class Buyer {
     this.email = '';  // - очистка данных покупателя;
   }
 
-  isValid():Errors {
+  isValid(): Errors {
 
     const errors: Errors = {};
 
@@ -62,7 +62,6 @@ export class Buyer {
     }
 
     return errors
-
   }
 
 }

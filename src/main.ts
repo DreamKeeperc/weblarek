@@ -15,6 +15,8 @@ console.log('Получение одного товара по его id:', prod
 productsModels.setProduct(apiProducts.items[0].id) // - Cохранение товара для подробного отображения
 console.log('Получение товара для подробного отображения:', productsModels.getProduct())
 
+
+
 const productInBasket = new Basket();
 console.log('Массив товаров из корзины(каталога):', productInBasket.getProducts());
 productInBasket.addProduct({

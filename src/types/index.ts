@@ -3,12 +3,17 @@ export type TPayment = 'cash' | 'card' | '';
 
 export type PostData = IBuyer & {
     total: number,
-    items: string[]
+    items: string[];
+}
+
+export type OrderResponse = {
+    total: number,
+    id: string;
 }
 
 export type ObjectApi = {
     total: number,
-    items: IProduct[]
+    items: IProduct[];
 }
 
 export type Errors = {
