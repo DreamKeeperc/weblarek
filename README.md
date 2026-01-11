@@ -103,29 +103,21 @@ Presenter - презентер содержит основную логику п
 * События изменения данных (генерируются классами  моделями данных) 
 - `basket:change` - изменение массива карточек внутри корзины; 
 - `buyer:change` - изменение способа оплаты данных пользователя;
-- `buyer:validation` - не прошло валидацию
 - `catalog:change` - изменение массива карточек;
-- `card:select` - изменение выбранной карточки на отображение в модальном окне;
+- `card:save` - сохранение карточки для подробного отображения;
 
 * События, возникающие при взаимодействии пользователя с интерфейсом (генерируются классами, отвечающими за представление)
 - `modal:close` - событие на закрытие карточки внутри модального окна (событие генерируется при клике на крестик, нажатие на клавишу Esc, на клик по оверлею) 
 - `order:continue` - событие на отправку на главный экран для начала новой сессии (событие генерируется при клике на кнопку `За новыми покупами`) 
-- `card:buy` - событие на покупку карточки внутри модального окна (событие генерируется на клик по кнопке купить)
-- `basket:open` - событие на открытие корзины (событие генерируется на нажатие на картинку корзины)
-- `card:delete` - событие на удаление карточки из корзины (событие генерируется на нажатие кнопки удаления из корзины)
+- `cardPreview:buy` - событие на покупку карточки в превью (событие генерируется на клик по кнопке купить);
+- `basket:open` - событие на открытие корзины в шапке(событие генерируется на нажатие на картинку корзины)
+- `cardBasket:delete` - событие на удаление карточки из корзины (событие генерируется на нажатие кнопки удаления из корзины)
 - `basket:continue` - событие на продолжение покупки товара(-ов) из корзины (событие генерируется на нажатие кнопки оформить в корзине)
-
 - `form-order:payment` - событие на изменение кнопки для оплаты товаров (событие генерируется на нажатие одной из двух кнопок в корзине)
-- `form-order:input` - событие на изменение инпута адреса доставки в форме заказа (событие генерируется при изменении поля ввода инпута)
-- `form-order:submit` - событие на отправку формы (событие генерируется при нажатии на кнопку 'Далее') 
+- `form-order:address` - событие на изменение инпута адреса доставки в форме заказа (событие генерируется при изменении поля ввода инпута)
+- `form[name]:submit` - событие на отправку формы (событие генерируется при нажатии на кнопку 'Далее') 
 - `form-contacts-email:input` - событие на изменение инпута email в форме заказа (событие генерируется при изменении поля ввода инпута)
 - `form-contacts-phone:input` - событие на изменение инпута phone в форме заказа (событие генерируется при изменении поля ввода инпута)
-- `form-contacts:submit` - событие на отправку формы (событие генерируется при нажатии на кнопку 'Оплатить') 
-
-- `form-order-input:validation` - событие возникает при необходимости валидации формы заказа.
-- `form-order-payment: validation` - событие возникает при необходимости выбрать один из способов оплаты.
-- `form-contacts-input-email:validation` - событие возникает при необходимости валидации формы емэйла.
-- `form-contacts-input-phone:validation` - событие возникает при необходимости валидации формы телефона.
 
 ### Данные
 В приложении используются 2 сущности, которые описывают данные продукта: это продукт и покупатель.
@@ -380,9 +372,6 @@ interface ICard {
 #### Класс СardFull 
 Родительский класс карточки для подробного отображения внутри него мы находим общие элементы для карточки в модальном окне и карточке каталога. Расширяет класс Card
 
-#### Класс CardCatalog
-Класс для отображения карточки в каталоге. Расширяет класс CardFull.
-
 Конструктор: 
 `constructor()` - 
 
@@ -415,17 +404,17 @@ interface ICardCatalog {
 
  
 Методы: 
-1) `set text(value: string)` - сеттер класса, который устанавливает подробное описание карточки. 
-2) `set category(value: string)` - сеттер класса, который устанавливает категорию у карточки для отображения.
-3) `set image(value: string)` - сеттер класса, который устанавливает картинку у карточки для отображения.
+1) `set description(value: string)`
+2) `set buttonText(value: string)`
+3) `set stateButton(value: boolean)` 
 
 #### Интерфейс ICardPreview
 
 ```
 interface ICardPreview {
-  text: string;
-  category: string;
-  image: string;
+  description: string;
+  buttonText: string;
+  stateButton: boolean;
 }
 ```
 
@@ -446,7 +435,7 @@ interface ICardPreview {
 #### Интерфейс ICardBasket
 
 ```
-interface ICardPreview {
+interface ICardBasket {
   index: number;
 }
 ```
@@ -458,21 +447,24 @@ interface ICardPreview {
 `constructor()` - 
 
 Поля класса: 
-1) `contentElement: HTMLElement` - 
+1) `listElement: HTMLElement` - 
 2) `priceElement: HTMLElement` - 
 3) `orderButton: HTMLButtonElement` - 
  
 Методы: 
-1) `set content(items: HTMLElement[])` -  
+1) `set list(item: HTMLElement[])` -  
 2) `set price(value: number)` - 
-
+3) `set stateButton(value:boolean)`-
+4) `set stateEmpty(value:string)`-
 
 #### Интерфейс IBasketView
 
 ```
 interface IBasketView {
-  content: HTMLElement[];
+  list: HTMLElement[] | null;
   price: number;
+  stateButton: boolean;
+  stateEmpty: string;
 }
 ```
 
@@ -482,19 +474,19 @@ interface IBasketView {
 `constructor()` - 
 
 Поля класса: 
-1) `labelElement: HTMLLabelElement`
-2) `modalElement: HTMLElement`
+1) `formErrors: HTMLElement`
+2) `buttonSubmit: HTMLButtonElement`
  
 Методы: 
-1) `set label(element: HTMLLabelElement)`
-2) `set modal(element: HTMLElement)`
+1) `set errors(value: string)`
+2) `set stateButton(value: boolean)`
 
 #### Интерфейс IForm
 
 ```
 interface IBasketView {
-  label: HTMLLabelElement
-  modal: HTMLElement
+  errors: string
+  stateButton: boolean
 }
 ```
 
@@ -505,16 +497,19 @@ interface IBasketView {
 `constructor()` - 
 
 Поля класса: 
-1) `cashButton: HTMLButtonElement` 
-2) `cardButton: HTMLButtonElement` 
+1) `protected formCashButton: HTMLButtonElement`;
+2) `protected formCardButton: HTMLButtonElement`;
+3) `protected formOrderInput: HTMLInputElement`;
  
 Методы: 
+1) `set payment(name: string)`
+2) `set address(value: string)`
 
-
-#### Интерфейс IOrderForm
+#### Интерфейс IFormOrder
 ```
-interface IOrderForm {
-  
+interface IFormOrder {
+  address: string;
+  payment: string;
 }
 ```
 
@@ -525,15 +520,20 @@ interface IOrderForm {
 `constructor()` - 
 
 Поля класса: 
+1)  `protected formInputEmail: HTMLInputElement`;
+2)  `protected formInputPhone: HTMLInputElement`;
 
 Методы: 
+1) `set email(value: string)`
 
+2) `set phone(value: string)`
 
 #### Интерфейс IContactsForm
 
 ```
-interface IContactsForm {
-  
+interface IFormContacts {
+  email: string;
+  phone: string;
 }
 ```
 

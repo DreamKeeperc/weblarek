@@ -28,14 +28,6 @@ export class Modal extends Component<IModal> {
     this.modalElement.addEventListener('click', ()=>{
       event?.stopPropagation();
     })
-
-    document.addEventListener('keydown', (e: KeyboardEvent)=>{
-      if(e.key === 'Escape') {
-        e.preventDefault();
-        this.container.focus();
-        this.events.emit('modal:close');
-      }
-    })
   }
 
   set content(element: HTMLElement) {
