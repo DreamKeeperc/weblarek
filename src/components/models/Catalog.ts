@@ -1,14 +1,18 @@
+import { IEvents } from '../base/Events';
 import { IProduct } from './../../types/index';
 
 export class Catalog {
   protected products: IProduct[] = [];
-  protected selectedProduct: IProduct | null = null; 
+  protected selectedProduct: IProduct | null = null;
+  protected events: IEvents; 
 
-  constructor () {
+  constructor (events: IEvents) {
+    this.events = events;
   }
 
   setProducts(products: IProduct[]) {
     this.products = products // сохраняем в поле класса products - массив карточек, полученных от сервера.
+    this.events.emit('catalog:change')
   }
 
   getProducts(): IProduct[] {
@@ -25,6 +29,7 @@ export class Catalog {
   
   setProduct(id: string):void {
     this.selectedProduct = this.getProductById(id); // - сохранение товара для подробного отображения;
+    this.events.emit('card:save');
   } 
 
   getProduct(): IProduct | null {

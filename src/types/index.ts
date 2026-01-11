@@ -43,3 +43,10 @@ export interface IBuyer {
     phone: string;
     address: string;
 }
+
+export interface ICardActions {
+    onClick?: () => void; 
+    onDelete?: () => void;
+    onBuy?: () => void;
+    onOrder?: ()=> void;
+}
