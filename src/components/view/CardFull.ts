@@ -16,22 +16,21 @@ export class CardFull<T> extends Card<TCardFull&T> {
     super(events, container);
     
     this.imageElement = ensureElement<HTMLImageElement>('.card__image', this.container);
-    this.categoryElement = ensureElement<HTMLElement>('.card__price', this.container);
+    this.categoryElement = ensureElement<HTMLElement>('.card__category', this.container);
     
     if(actions?.onClick) {
       this.container.addEventListener('click', actions.onClick);
     }
   }
 
-  set category(name: string) {
-    this.categoryElement.textContent = name;
-   /* for(const key in categoryMap) {
+  set category(value: string) {
+    this.categoryElement.textContent = value;
+    for(const key in categoryMap) {
       this.categoryElement.classList.toggle(
         categoryMap[key as categoryKey],
-        key === name
+        key === value
       )
     }
-      */
   }
 
   set image(value: string) {

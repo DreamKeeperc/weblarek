@@ -14,7 +14,7 @@ import { API_URL } from './utils/constants';
 import { cloneTemplate, ensureElement } from './utils/utils';
 import { Modal } from './components/view/Modal';
 import { BasketView } from './components/view/BasketView';
-import { Order } from './components/view/Order';
+import { SuccessOrder } from './components/view/SuccessOrder';
 import { FormOrder } from './components/view/OrderForm';
 import { Gallery } from './components/view/Gallery';
 import { TPayment } from './types';
@@ -47,7 +47,7 @@ const gallery = new Gallery(events, page)
 const cardPreview = new CardPreview(events, cardPreviewTemplate);
 const modal = new Modal(events, modalContainer);
 const basket = new BasketView(events, basketTemplate);
-const order = new Order(events, successTemplate);
+const order = new SuccessOrder(events, successTemplate);
 const formOrder = new FormOrder(events, formOrderTemplate);
 const formContacts = new FormContacts(events, formContactsTemplate);
 
@@ -178,7 +178,6 @@ events.on('buyer:change', ()=>{
   formOrder.address = buyer.getData().address;
   formContacts.email = buyer.getData().email;
   formContacts.phone = buyer.getData().phone;
-
   const { payment, address, email,  phone} = buyer.isValid();
   
   formOrder.render({

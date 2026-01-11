@@ -15,10 +15,6 @@ export class Gallery extends Component<IGallery> {
     this.events = events;
 
     this.catalogElement = ensureElement<HTMLElement>('.gallery', this.container);
-
-    this.events.on('catalog:change', () => {
-      console.log('Каталог заполнился карточками');
-    });
   }
 
   set catalog(items: HTMLElement[]) {

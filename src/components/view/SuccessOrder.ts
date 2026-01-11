@@ -6,7 +6,7 @@ interface IOrder {
   total: number;
 }
 
-export class Order extends Component<IOrder> {
+export class SuccessOrder extends Component<IOrder> {
   protected orderButton: HTMLButtonElement;
   protected totalElement: HTMLElement;
   protected events: IEvents;
